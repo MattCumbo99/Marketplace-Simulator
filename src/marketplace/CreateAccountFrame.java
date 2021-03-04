@@ -7,8 +7,10 @@ package marketplace;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.io.FileNotFoundException;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.util.Scanner;
 import javax.swing.JOptionPane;
 
 /**
@@ -178,11 +180,41 @@ public class CreateAccountFrame extends javax.swing.JFrame {
         
         try {
             File accountFile = new File("Accounts.txt");
+            boolean fileExists = true;
             
             // Initalize the account file if it doesn't exist
             if (accountFile.createNewFile()) {
                 System.out.println("Accounts file not found. Created a new one.");
+                fileExists = false;
             }
+            
+            // Check if the username is a duplicate
+            if (fileExists) {
+                try {
+                    Scanner reader = new Scanner(accountFile);
+                    String data;
+                    int index = 3;
+                    while (reader.hasNextLine()) {
+                        // Check every username
+                        if (index % 3 == 0) {
+                            data = reader.nextLine();
+
+                            // Check if account already exists
+                            if (data.equalsIgnoreCase(user)) {
+                                JOptionPane.showMessageDialog(this, "Account already exists.", "Error", JOptionPane.ERROR_MESSAGE);
+                                reader.close();
+                                return;
+                            }
+                        }
+                        index++;
+                    }
+                    reader.close();
+                } catch (FileNotFoundException e) {
+                    System.out.println("An error has occurred.");
+                    e.printStackTrace();
+                }
+            }
+            
             
             FileWriter fw = new FileWriter(accountFile, true);
             BufferedWriter bw = new BufferedWriter(fw);
