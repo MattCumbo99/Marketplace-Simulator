@@ -11,7 +11,7 @@ package marketplace;
  */
 public class MainFrame extends javax.swing.JFrame {
 
-    private String username;
+    private final String username;
     
     /**
      * Creates new form MainFrame
