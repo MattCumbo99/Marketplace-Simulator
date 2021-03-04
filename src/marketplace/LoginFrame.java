@@ -5,6 +5,14 @@
  */
 package marketplace;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.FileNotFoundException;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.util.Scanner;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Mattrition
@@ -59,7 +67,11 @@ public class LoginFrame extends javax.swing.JFrame {
         });
 
         btnLogin.setText("Log in");
-        btnLogin.setEnabled(false);
+        btnLogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLoginActionPerformed(evt);
+            }
+        });
 
         lblCreateAccount.setForeground(new java.awt.Color(0, 102, 255));
         lblCreateAccount.setText("create an account");
@@ -125,10 +137,69 @@ public class LoginFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_txtUsernameActionPerformed
 
     private void lblCreateAccountMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCreateAccountMouseClicked
-        // TODO add your handling code here:
         this.setEnabled(false);
         new CreateAccountFrame(this).setVisible(true);
     }//GEN-LAST:event_lblCreateAccountMouseClicked
+
+    private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
+        // TODO add your handling code here:
+        String user = txtUsername.getText();
+        char[] pass = txtPassword.getPassword();
+        
+        if (user.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Username cannot be blank.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        else if (pass.length == 0) {
+            JOptionPane.showMessageDialog(this, "Password cannot be blank.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        try {
+            File accountFile = new File("Accounts.txt");
+            Scanner reader = new Scanner(accountFile);
+            String checkedUser = "";
+            String checkedPass = "";
+            String data;
+            
+            // Look for the designated account
+            while (reader.hasNextLine()) {
+                data = reader.nextLine();
+                
+                if (!data.isEmpty()) {
+                    if (checkedUser.isEmpty()) {
+                        checkedUser = data;
+                    }
+                    else if (checkedPass.isEmpty()) {
+                        checkedPass = data;
+                    }
+                    // Is the current iteration the requested account?
+                    if (checkedUser.equalsIgnoreCase(user)) {
+                        // Check if the password is correct
+                        if (checkedPass.equals(new String(pass))) {
+                            JOptionPane.showMessageDialog(this, "Login successful.", "Success", JOptionPane.INFORMATION_MESSAGE);
+                            reader.close();
+                            return;
+                        }
+                        else if (!checkedPass.isEmpty()) {
+                            // Username found, wrong password
+                            break;
+                        }
+                    }
+                }
+                else {
+                    checkedUser = "";
+                    checkedPass = "";
+                }
+            }
+            reader.close();
+            
+            JOptionPane.showMessageDialog(this, "Username and password do not match.", "Error", JOptionPane.ERROR_MESSAGE);
+            
+        } catch (FileNotFoundException e) {
+            JOptionPane.showMessageDialog(this, "Username and password do not match.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnLoginActionPerformed
 
     /**
      * @param args the command line arguments
