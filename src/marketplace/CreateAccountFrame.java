@@ -5,6 +5,12 @@
  */
 package marketplace;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Mattrition
@@ -13,8 +19,19 @@ public class CreateAccountFrame extends javax.swing.JFrame {
 
     private final LoginFrame prevForm;
     
+    private boolean passwordMatch(char[] a, char[] b) {
+        if (a.length != b.length) return false;
+        
+        for (int i = 0; i < a.length; i++) {
+            if (a[i] != b[i]) return false;
+        }
+        
+        return true;
+    }
+    
     /**
      * Creates new form CreateAccountFrame
+     * @param login The login screen frame
      */
     public CreateAccountFrame(LoginFrame login) {
         prevForm = login;
@@ -64,7 +81,11 @@ public class CreateAccountFrame extends javax.swing.JFrame {
         lblPassword.setText("Password:");
 
         btnCreate.setText("Register");
-        btnCreate.setEnabled(false);
+        btnCreate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCreateActionPerformed(evt);
+            }
+        });
 
         lblPassword1.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         lblPassword1.setText("Confirm password:");
@@ -130,6 +151,58 @@ public class CreateAccountFrame extends javax.swing.JFrame {
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         this.prevForm.reenableForm();
     }//GEN-LAST:event_formWindowClosing
+
+    private void btnCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateActionPerformed
+        // TODO add your handling code here:
+        String user = txtUsername.getText();
+        char[] pass = txtPassword.getPassword();
+        char[] pass_con = txtConfirmPassword.getPassword();
+        
+        // Check for discrepancies
+        if (user.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Username cannot be blank.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        else if (pass.length == 0) {
+            JOptionPane.showMessageDialog(this, "Password cannot be blank.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        else if (pass_con.length == 0) {
+            JOptionPane.showMessageDialog(this, "Please retype your password.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        else if (!passwordMatch(pass, pass_con)) {
+            JOptionPane.showMessageDialog(this, "Passwords do not match.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        try {
+            File accountFile = new File("Accounts.txt");
+            
+            // Initalize the account file if it doesn't exist
+            if (accountFile.createNewFile()) {
+                System.out.println("Accounts file not found. Created a new one.");
+            }
+            
+            FileWriter fw = new FileWriter(accountFile, true);
+            BufferedWriter bw = new BufferedWriter(fw);
+            
+            // Add the account information to the file
+            bw.write(user);
+            bw.newLine();
+            bw.write(pass);
+            bw.newLine();
+            bw.newLine();
+            bw.close();
+            
+            JOptionPane.showMessageDialog(this, "Account successfully created.", "Success", JOptionPane.INFORMATION_MESSAGE);
+            this.prevForm.reenableForm();
+            this.dispose();
+        } catch (IOException e) {
+            System.out.println("An error has occurred.");
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_btnCreateActionPerformed
 
     /**
      * @param args the command line arguments
