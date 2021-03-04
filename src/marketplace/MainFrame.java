@@ -50,7 +50,30 @@ public class MainFrame extends javax.swing.JFrame {
 
         tableBuy.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
                 "Item Name", "Min Price", "Quantity"
@@ -107,6 +130,11 @@ public class MainFrame extends javax.swing.JFrame {
         mnuFile.setText("File");
 
         itemLogout.setText("Logout");
+        itemLogout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemLogoutActionPerformed(evt);
+            }
+        });
         mnuFile.add(itemLogout);
 
         menuBar.add(mnuFile);
@@ -141,6 +169,11 @@ public class MainFrame extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void itemLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemLogoutActionPerformed
+        this.dispose();
+        new LoginFrame().setVisible(true);
+    }//GEN-LAST:event_itemLogoutActionPerformed
 
     /**
      * @param args the command line arguments
