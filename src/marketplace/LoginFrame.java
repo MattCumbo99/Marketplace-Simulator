@@ -173,7 +173,7 @@ public class LoginFrame extends javax.swing.JFrame {
                     if (checkedUser.equalsIgnoreCase(user)) {
                         // Check if the password is correct
                         if (checkedPass.equals(new String(pass))) {
-                            new MainFrame().setVisible(true);
+                            new MainFrame(checkedUser).setVisible(true);
                             this.dispose();
                             JOptionPane.showMessageDialog(null, "Login successful.", "Success", JOptionPane.INFORMATION_MESSAGE);
                             reader.close();
