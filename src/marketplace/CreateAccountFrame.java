@@ -155,7 +155,6 @@ public class CreateAccountFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosing
 
     private void btnCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateActionPerformed
-        // TODO add your handling code here:
         String user = txtUsername.getText();
         char[] pass = txtPassword.getPassword();
         char[] pass_con = txtConfirmPassword.getPassword();
