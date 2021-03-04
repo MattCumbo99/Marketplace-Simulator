@@ -17,6 +17,10 @@ public class LoginFrame extends javax.swing.JFrame {
     public LoginFrame() {
         initComponents();
     }
+    
+    public void reenableForm() {
+        this.setEnabled(true);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -122,6 +126,8 @@ public class LoginFrame extends javax.swing.JFrame {
 
     private void lblCreateAccountMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCreateAccountMouseClicked
         // TODO add your handling code here:
+        this.setEnabled(false);
+        new CreateAccountFrame(this).setVisible(true);
     }//GEN-LAST:event_lblCreateAccountMouseClicked
 
     /**
